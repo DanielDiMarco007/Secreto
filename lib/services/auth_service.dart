@@ -20,7 +20,7 @@ class AuthService {
         password: password.trim(),
       );
     } on FirebaseAuthException catch (e) {
-      throw Exception(e.message);
+      throw Exception(_getErrorMessage(e));
     }
   }
 
@@ -34,11 +34,36 @@ class AuthService {
         password: password.trim(),
       );
     } on FirebaseAuthException catch (e) {
-      throw Exception(e.message);
+      throw Exception(_getErrorMessage(e));
     }
   }
 
   static Future<void> signOut() async {
     await _auth.signOut();
+  }
+
+  static String _getErrorMessage(
+    FirebaseAuthException e,
+  ) {
+    switch (e.code) {
+      case 'user-not-found':
+        return 'Usuario no encontrado';
+
+      case 'wrong-password':
+        return 'Contraseña incorrecta';
+
+      case 'email-already-in-use':
+        return 'El correo ya está registrado';
+
+      case 'invalid-email':
+        return 'Correo inválido';
+
+      case 'weak-password':
+        return 'La contraseña es demasiado débil';
+
+      default:
+        return e.message ??
+            'Error de autenticación';
+    }
   }
 }

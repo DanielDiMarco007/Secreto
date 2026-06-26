@@ -4,25 +4,31 @@ class EncryptionService {
   EncryptionService._();
 
   static final Key _key = Key.fromUtf8(
-    '12345678901234567890123456789012',
+    'SecretDropKey2026FlutterApp32!!',
   );
-
-  static final IV _iv = IV.fromLength(16);
 
   static final Encrypter _encrypter =
       Encrypter(AES(_key));
 
-  static String encrypt(String text) {
-    return _encrypter.encrypt(
-      text,
-      iv: _iv,
-    ).base64;
+  static String encrypt(String plainText) {
+    final iv = IV.fromSecureRandom(16);
+
+    final encrypted = _encrypter.encrypt(
+      plainText,
+      iv: iv,
+    );
+
+    return '${iv.base64}:${encrypted.base64}';
   }
 
   static String decrypt(String encryptedText) {
+    final parts = encryptedText.split(':');
+
+    final iv = IV.fromBase64(parts[0]);
+
     return _encrypter.decrypt64(
-      encryptedText,
-      iv: _iv,
+      parts[1],
+      iv: iv,
     );
   }
 }
