@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "772574315599",
+    "project_id": "buzon-1cce8",
+    "storage_bucket": "buzon-1cce8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772574315599:android:76d616d8394fb728d0d63a",
+        "android_client_info": {
+          "package_name": "com.example.buzon_secreto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXXVnN4zIMWioWRaoE48dlMKjfb3OM1Vc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

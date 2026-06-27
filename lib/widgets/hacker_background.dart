@@ -12,14 +12,14 @@ class HackerBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Color(0xFF08080D),
-            Color(0xFF13131C),
-            Color(0xFF1A1030),
+            AppTheme.background,
+            AppTheme.surface,
+            AppTheme.purple.withOpacity(0.25),
           ],
         ),
       ),

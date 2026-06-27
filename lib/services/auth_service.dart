@@ -7,8 +7,7 @@ class AuthService {
 
   static User? get currentUser => _auth.currentUser;
 
-  static Stream<User?> get authStateChanges =>
-      _auth.authStateChanges();
+  static Stream<User?> get authStateChanges => _auth.authStateChanges();
 
   static Future<UserCredential> signIn({
     required String email,
@@ -42,9 +41,7 @@ class AuthService {
     await _auth.signOut();
   }
 
-  static String _getErrorMessage(
-    FirebaseAuthException e,
-  ) {
+  static String _getErrorMessage(FirebaseAuthException e) {
     switch (e.code) {
       case 'user-not-found':
         return 'Usuario no encontrado';
@@ -61,9 +58,17 @@ class AuthService {
       case 'weak-password':
         return 'La contraseña es demasiado débil';
 
+      case 'operation-not-allowed':
+        return 'El método de autenticación no está habilitado';
+
+      case 'configuration-not-found':
+        return 'Configuración de Firebase no encontrada. Revisa google-services.json y la consola de Firebase';
+
+      case 'internal-error':
+        return 'Error interno de Firebase. Intenta nuevamente más tarde';
+
       default:
-        return e.message ??
-            'Error de autenticación';
+        return e.message ?? 'Error de autenticación';
     }
   }
 }

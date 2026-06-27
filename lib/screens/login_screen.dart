@@ -8,6 +8,9 @@ import 'register_screen.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+
+
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -19,28 +22,31 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
 
   Future<void> login() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Ingresa correo y contraseña')),
+      );
+      return;
+    }
+
     try {
       setState(() => isLoading = true);
 
-      await AuthService.signIn(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      await AuthService.signIn(email: email, password: password);
 
       if (!mounted) return;
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
-        ),
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     } finally {
       setState(() => isLoading = false);
     }
@@ -57,12 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
 
             children: [
-
-              const Icon(
-                Icons.lock_outline,
-                size: 90,
-                color: AppTheme.purple,
-              ),
+              const Icon(Icons.lock_outline, size: 90, color: AppTheme.purple),
 
               const SizedBox(height: 20),
 
@@ -79,9 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               TextField(
                 controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: "Correo",
-                ),
+                decoration: const InputDecoration(labelText: "Correo"),
               ),
 
               const SizedBox(height: 15),
@@ -89,9 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "Contraseña",
-                ),
+                decoration: const InputDecoration(labelText: "Contraseña"),
               ),
 
               const SizedBox(height: 25),
@@ -109,15 +106,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          const RegisterScreen(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const RegisterScreen()),
                   );
                 },
-                child: const Text(
-                  "Crear cuenta",
-                ),
+                child: const Text("Crear cuenta"),
               ),
             ],
           ),
