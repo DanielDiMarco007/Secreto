@@ -41,48 +41,46 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDg15RwE8zuztX_rD1NbqLCplSZXBDai8M',
-    appId: '1:772574315599:web:84c890e873406f6ed0d63a',
-    messagingSenderId: '772574315599',
-    projectId: 'buzon-1cce8',
-    authDomain: 'buzon-1cce8.firebaseapp.com',
-    storageBucket: 'buzon-1cce8.firebasestorage.app',
-    measurementId: 'G-DJ8QLR3N5M',
+    apiKey: 'AIzaSyCxlyl1veXZE0oD1o7GEk-OGh8PPs6QjiY',
+    appId: '1:633226661838:web:7d1b8ceb24cc5fd2bc659f',
+    messagingSenderId: '633226661838',
+    projectId: 'buzon-secreto-ecbe0',
+    authDomain: 'buzon-secreto-ecbe0.firebaseapp.com',
+    storageBucket: 'buzon-secreto-ecbe0.firebasestorage.app',
+    measurementId: 'G-MNCPND3TTV',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAXXVnN4zIMWioWRaoE48dlMKjfb3OM1Vc',
-    appId: '1:772574315599:android:76d616d8394fb728d0d63a',
-    messagingSenderId: '772574315599',
-    projectId: 'buzon-1cce8',
-    storageBucket: 'buzon-1cce8.firebasestorage.app',
+    apiKey: 'AIzaSyAQTpTW33LtxujEU7q3UWYWudnFG60vEbE',
+    appId: '1:633226661838:android:ff4456704d499971bc659f',
+    messagingSenderId: '633226661838',
+    projectId: 'buzon-secreto-ecbe0',
+    storageBucket: 'buzon-secreto-ecbe0.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB90JTescGATsaIa38oWH-SraARdcUdgUg',
-    appId: '1:772574315599:ios:f164b7fda9243ed5d0d63a',
-    messagingSenderId: '772574315599',
-    projectId: 'buzon-1cce8',
-    storageBucket: 'buzon-1cce8.firebasestorage.app',
+    apiKey: 'AIzaSyA-DuAcx--9D0lczmol06q9XeNLZh0Bgvc',
+    appId: '1:633226661838:ios:53f2357958691eb0bc659f',
+    messagingSenderId: '633226661838',
+    projectId: 'buzon-secreto-ecbe0',
+    storageBucket: 'buzon-secreto-ecbe0.firebasestorage.app',
     iosBundleId: 'com.example.buzonSecreto',
   );
-
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB90JTescGATsaIa38oWH-SraARdcUdgUg',
-    appId: '1:772574315599:ios:f164b7fda9243ed5d0d63a',
-    messagingSenderId: '772574315599',
-    projectId: 'buzon-1cce8',
-    storageBucket: 'buzon-1cce8.firebasestorage.app',
+    apiKey: 'AIzaSyA-DuAcx--9D0lczmol06q9XeNLZh0Bgvc',
+    appId: '1:633226661838:ios:53f2357958691eb0bc659f',
+    messagingSenderId: '633226661838',
+    projectId: 'buzon-secreto-ecbe0',
+    storageBucket: 'buzon-secreto-ecbe0.firebasestorage.app',
     iosBundleId: 'com.example.buzonSecreto',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDg15RwE8zuztX_rD1NbqLCplSZXBDai8M',
-    appId: '1:772574315599:web:96273a858f0d7048d0d63a',
-    messagingSenderId: '772574315599',
-    projectId: 'buzon-1cce8',
-    authDomain: 'buzon-1cce8.firebaseapp.com',
-    storageBucket: 'buzon-1cce8.firebasestorage.app',
-    measurementId: 'G-M9EWJGEQ8Z',
+    apiKey: 'AIzaSyCxlyl1veXZE0oD1o7GEk-OGh8PPs6QjiY',
+    appId: '1:633226661838:web:95be1eb4f59cbeadbc659f',
+    messagingSenderId: '633226661838',
+    projectId: 'buzon-secreto-ecbe0',
+    authDomain: 'buzon-secreto-ecbe0.firebaseapp.com',
+    storageBucket: 'buzon-secreto-ecbe0.firebasestorage.app',
+    measurementId: 'G-1ZE7R3EMD2',
   );
 }

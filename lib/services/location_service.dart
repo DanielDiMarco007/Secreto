@@ -3,41 +3,43 @@ import 'package:geolocator/geolocator.dart';
 class LocationService {
   LocationService._();
 
-  /// Obtiene la ubicación actual del dispositivo
+  /// Obtiene la ubicación actual del dispositivo de forma rápida
   static Future<Position> getCurrentLocation() async {
-    final bool serviceEnabled =
-        await Geolocator.isLocationServiceEnabled();
+    final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
-      throw Exception(
-        'Los servicios de ubicación están desactivados.',
-      );
+      throw Exception('Los servicios de ubicación están desactivados.');
     }
 
-    LocationPermission permission =
-        await Geolocator.checkPermission();
+    LocationPermission permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.denied) {
-      permission =
-          await Geolocator.requestPermission();
+      permission = await Geolocator.requestPermission();
     }
 
-    if (permission == LocationPermission.denied) {
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
       throw Exception(
-        'Permisos de ubicación denegados.',
+        permission == LocationPermission.deniedForever
+            ? 'Los permisos de ubicación fueron denegados permanentemente. Actívalos desde Ajustes.'
+            : 'No se concedieron los permisos de ubicación.',
       );
     }
 
-    if (permission ==
-        LocationPermission.deniedForever) {
-      throw Exception(
-        'Permisos denegados permanentemente.',
-      );
+    final lastKnownPosition = await Geolocator.getLastKnownPosition();
+    if (lastKnownPosition != null) {
+      return lastKnownPosition;
     }
 
     return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best,
-      timeLimit: const Duration(seconds: 15),
+      locationSettings: buildFastSettings(),
+    );
+  }
+
+  static LocationSettings buildFastSettings({Duration? timeLimit}) {
+    return LocationSettings(
+      accuracy: LocationAccuracy.medium,
+      timeLimit: timeLimit ?? const Duration(seconds: 5),
     );
   }
 

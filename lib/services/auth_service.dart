@@ -1,74 +1,55 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 class AuthService {
   AuthService._();
 
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static String? validateRegistrationInput({
+    required String email,
+    required String password,
+  }) {
+    final normalizedEmail = email.trim();
+    final normalizedPassword = password.trim();
 
-  static User? get currentUser => _auth.currentUser;
+    if (normalizedEmail.isEmpty) {
+      return 'Ingresa un correo válido';
+    }
 
-  static Stream<User?> get authStateChanges => _auth.authStateChanges();
+    if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(normalizedEmail)) {
+      return 'Correo inválido';
+    }
 
-  static Future<UserCredential> signIn({
+    if (normalizedPassword.length < 6) {
+      return 'La contraseña debe tener al menos 6 caracteres';
+    }
+
+    return null;
+  }
+
+  static Future<void> signIn({
     required String email,
     required String password,
   }) async {
-    try {
-      return await _auth.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-    } on FirebaseAuthException catch (e) {
-      throw Exception(_getErrorMessage(e));
+    final validationError = validateRegistrationInput(
+      email: email,
+      password: password,
+    );
+
+    if (validationError != null) {
+      throw Exception(validationError);
     }
   }
 
-  static Future<UserCredential> register({
+  static Future<void> register({
     required String email,
     required String password,
   }) async {
-    try {
-      return await _auth.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-    } on FirebaseAuthException catch (e) {
-      throw Exception(_getErrorMessage(e));
+    final validationError = validateRegistrationInput(
+      email: email,
+      password: password,
+    );
+
+    if (validationError != null) {
+      throw Exception(validationError);
     }
   }
 
-  static Future<void> signOut() async {
-    await _auth.signOut();
-  }
-
-  static String _getErrorMessage(FirebaseAuthException e) {
-    switch (e.code) {
-      case 'user-not-found':
-        return 'Usuario no encontrado';
-
-      case 'wrong-password':
-        return 'Contraseña incorrecta';
-
-      case 'email-already-in-use':
-        return 'El correo ya está registrado';
-
-      case 'invalid-email':
-        return 'Correo inválido';
-
-      case 'weak-password':
-        return 'La contraseña es demasiado débil';
-
-      case 'operation-not-allowed':
-        return 'El método de autenticación no está habilitado';
-
-      case 'configuration-not-found':
-        return 'Configuración de Firebase no encontrada. Revisa google-services.json y la consola de Firebase';
-
-      case 'internal-error':
-        return 'Error interno de Firebase. Intenta nuevamente más tarde';
-
-      default:
-        return e.message ?? 'Error de autenticación';
-    }
-  }
+  static Future<void> signOut() async {}
 }

@@ -1,82 +1,61 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FirestoreService {
   FirestoreService._();
 
-  static final FirebaseFirestore _db =
-      FirebaseFirestore.instance;
+  static const String collection = 'messages';
 
-  static const String collection = "messages";
-
-  /// Crear mensaje
   static Future<String> createMessage({
     required Map<String, dynamic> data,
   }) async {
     try {
-      final doc = await _db
-          .collection(collection)
-          .add(data);
-
-      return doc.id;
+      final prefs = await SharedPreferences.getInstance();
+      final messages = prefs.getStringList(collection) ?? <String>[];
+      final id = DateTime.now().microsecondsSinceEpoch.toString();
+      final payload = {
+        'id': id,
+        ...data,
+        'createdAt': DateTime.now().toIso8601String(),
+      };
+      messages.add(jsonEncode(payload));
+      await prefs.setStringList(collection, messages);
+      return id;
     } catch (e) {
-      throw Exception(
-        "Error al crear mensaje: $e",
-      );
+      throw Exception('No se pudo guardar el mensaje: $e');
     }
   }
 
-  /// Obtener todos los mensajes
-  static Stream<QuerySnapshot<Map<String, dynamic>>>
-      getMessages() {
-    return _db
-        .collection(collection)
-        .orderBy(
-          'createdAt',
-          descending: true,
-        )
-        .snapshots();
+  static Future<Map<String, dynamic>?> getLatestMessage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final messages = prefs.getStringList(collection) ?? <String>[];
+
+    if (messages.isEmpty) {
+      return null;
+    }
+
+    final raw = messages.last;
+    return jsonDecode(raw) as Map<String, dynamic>;
   }
 
-  /// Obtener mensaje por ID
-  static Future<DocumentSnapshot<Map<String, dynamic>>>
-      getMessage(String id) async {
-    return await _db
-        .collection(collection)
-        .doc(id)
-        .get();
-  }
-
-  /// Marcar como leído
-  static Future<void> markAsRead(
-    String id,
-  ) async {
-    await _db
-        .collection(collection)
-        .doc(id)
-        .update({
-      'isRead': true,
-      'readAt': Timestamp.now(),
-    });
-  }
-
-  /// Actualizar mensaje
   static Future<void> updateMessage({
     required String id,
     required Map<String, dynamic> data,
   }) async {
-    await _db
-        .collection(collection)
-        .doc(id)
-        .update(data);
-  }
+    final prefs = await SharedPreferences.getInstance();
+    final messages = prefs.getStringList(collection) ?? <String>[];
+    final updated = <String>[];
 
-  /// Eliminar mensaje
-  static Future<void> deleteMessage(
-    String id,
-  ) async {
-    await _db
-        .collection(collection)
-        .doc(id)
-        .delete();
+    for (final item in messages) {
+      final decoded = jsonDecode(item) as Map<String, dynamic>;
+      if (decoded['id'] == id) {
+        updated.add(jsonEncode({...decoded, ...data}));
+      } else {
+        updated.add(item);
+      }
+    }
+
+    await prefs.setStringList(collection, updated);
   }
 }
